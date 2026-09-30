@@ -9,6 +9,7 @@ const authRouter=express.Router()
 
 authRouter.post('/register',async(req,res)=>{
     const {username,email,password,bio,userImage}=req.body
+console.log("hello");
 
     const isuser=await userModule.findOne({
         $or:[{email},{username}]
