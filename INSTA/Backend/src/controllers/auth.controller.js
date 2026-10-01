@@ -1,7 +1,8 @@
 const express =require('express')
+const bcrypt=require('bcryptjs')
 
 const jwt=require('jsonwebtoken')
-const crypto= require('crypto')
+// const crypto= require('crypto')
 const userModule = require('../models/user.model')
 
 async function registerUser(req,res){
@@ -15,9 +16,9 @@ async function registerUser(req,res){
         return res.status(409).json({
             message:'user already exist'
     })
-    
-    const hash=crypto.createHash('sha256').update(password).digest('hex')
-    const user= userModule.create({username,email,password : hash ,bio,userImage})
+    const hash=await bcrypt.hash(password,10) 
+    //in the place of crypto we can use bcrypt to hash the password before storing it in the database
+    const user= await userModule.create({username,email,password : hash ,bio,userImage})
 
     const token=jwt.sign({
         id:user._id
@@ -39,9 +40,11 @@ async function loginUser(req,res){
         return res.status(409).json({
             message:'user doesnot exist'
     })
-
-    const hash=crypto.createHash('sha256').update(password).digest('hex')
-    const ispassword=hash===user.password
+    //const hash=crypto.createHash('sha256').update(password).digest('hex')
+    //const ispassword=hash===user.password
+    
+    const ispassword = await bcrypt.compare(password,user.password) 
+     //in the palce of crypto we can use bcrypt to compare the password with the hashed password stored in the database
 
     if(!ispassword){
         return res.status(409).json({
