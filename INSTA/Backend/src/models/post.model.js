@@ -6,9 +6,9 @@ const postSchema=new mongoose.Schema({
         ref: 'User',
         required: [true, 'User is required']
     },
-    content: {
+    caption: {
         type: String,
-        required: [true, 'Content is required']
+        required: [true, 'Caption is required']
     },
     image: {
         type: String,

@@ -55,6 +55,7 @@ async function loginUser(req,res){
     const token=jwt.sign({
         id:user._id
     },process.env.jwt_token)
+    res.cookie('token',token)
 
     res.status(201).json({
         messgae:'Login successfully',
