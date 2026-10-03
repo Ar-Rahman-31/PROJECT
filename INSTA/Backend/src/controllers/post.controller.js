@@ -5,6 +5,7 @@ const ImageKit =require ('@imagekit/nodejs')
 const {toFile} =require ('@imagekit/nodejs')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const { checkAuth } = require('../middleware/auth.middle')
 
 const imagekit = new ImageKit({
   privateKey: process.env['IMAGEKIT_PRIVATE_KEY'], // This is the default and can be omitted
@@ -12,24 +13,7 @@ const imagekit = new ImageKit({
 
 
 async function createPost(req, res) {
-    console.log(req.body,req.file)
-
-    const token = req.cookies.token //here we are getting the token from the cookie instead of the request body, 
-         //as it is more secure to store the token in a cookie rather than sending it in the request body.
-    if(!token) {
-        return res.status(401).json({ message: 'Unauthorized access' })
-    }
-    let decoded;
-    try {
-        decoded = jwt.verify(token, process.env.jwt_token) 
-    }
-    catch (err) {
-        return res.status(401).json({ message: 'Invalid token' })
-    } 
-    //here we are verifying the token using the jwt.verify method,
-     // which will decode the token and return the payload if the token is valid,
-     //  otherwise it will throw an error.
-
+   
     const file = await imagekit.files.upload({
         file: await toFile(Buffer.from(req.file.buffer)), // or file path
         fileName: req.file.originalname,
@@ -43,7 +27,7 @@ async function createPost(req, res) {
      //here we are creating a new post in the database using the postModel.create method,
      // which takes the user id, caption and image url as parameters and returns the created post details.
     const post = await postModel.create({
-        user: decoded.id,
+        user: req.decoded.id,
         caption: req.body.caption,
         image: file.url
     })
@@ -54,17 +38,8 @@ async function createPost(req, res) {
 }          
     
 async function getPosts(req, res) {
-    const token = req.cookies.token
-    if(!token) {
-        return res.status(401).json({ message: 'Unauthorized access' })
-    }
-    let decoded;
-    try {
-        decoded = jwt.verify(token, process.env.jwt_token)// here we are verifying the token using the jwt.verify method,
-    }
-    catch (err) {
-        return res.status(401).json({ message: 'Invalid token' })
-    }   
+   
+    
     const posts = await postModel.find({ user: decoded.id }) // here we are fetching all the posts of the logged in user from the database using the postModel.find method,
      // which takes the user id as a parameter and returns an array of posts.
     res.status(200).json({
@@ -76,26 +51,24 @@ async function getPosts(req, res) {
 }
 
 
-async function getdetails(req, res){
-    token =req.cookies.token
-    if(!token){
-        return res.status(401).json({message:'Unauthorized access'})
-    }
-    let decoded;
-    try{
-        decoded=jwt.verify(token,process.env.jwt_token)
-    }
-    catch(err){
-        return res.status(401).json({message:'Invalid token'})
-    }
+async function getdetails(req, res,next){
+  
 
-    let userid=decoded.id
-    let postid=req.params.id
+    let userid=req.decoded.id //here we are getting the user id from the decoded token, which is passed in the request headers as a Bearer token.
+    let postid=req.params.id //here we are getting the post id from the request params, which is passed in the url as /posts/:id
+
+    console.log('userid:',userid)
+    console.log('postid:',postid)
 
     const posts=await postModel.findById(postid )
 
-    if(!posts){
+    console.log('posts:',posts)
+      if(!posts){
         return res.status(404).json({message:'Post not found'})
+    }
+
+    if(posts.user.toString() !==userid){
+        return res.status(403).json({message:'You are not authorized to view this post'})   
     }
 
     res.status(200).json({
