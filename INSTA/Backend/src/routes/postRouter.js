@@ -6,8 +6,8 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage:multer.memoryStorage() })
 
 postRouter.post('/create', upload.single('image'), postController.createPost)
-
-
+postRouter.get('/getposts', postController.getPosts)
+postRouter.get('/getdetails/:id', postController.getdetails)
 
 
 
