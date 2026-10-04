@@ -21,7 +21,7 @@ async function registerUser(req,res){
     const user= await userModule.create({username,email,password : hash ,bio,userImage})
 
     const token=jwt.sign({
-        id:user._id
+        id:user._id,username:user.username
     },process.env.jwt_token)
    res.cookie('token',token)
 
@@ -53,7 +53,7 @@ async function loginUser(req,res){
     }
 
     const token=jwt.sign({
-        id:user._id
+        id:user._id,username:user.username
     },process.env.jwt_token)
     res.cookie('token',token)
 
