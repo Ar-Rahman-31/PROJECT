@@ -1,16 +1,24 @@
 const express=require('express')
 const cookieParser=require('cookie-parser')
-const authRouter=require('./routes/authRouter')
-const followRouter=require('./routes/followRouter')
+
 const app=express()
-
-
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/api/follow',followRouter)
+
+
+
+const authRouter=require('./routes/authRouter')
+const postRouter=require('./routes/postRouter')
+const followRouter=require('./routes/followRouter')
+const likesRouter=require('./routes/likesRouter')
+
+
+app.use('/api/user',followRouter)
+app.use('/api/users',likesRouter)
 app.use('/api/auth',authRouter)
-app.use('/api/post',require('./routes/postRouter'))
+app.use('/api/post',postRouter)
+
 
 
 module.exports =app
