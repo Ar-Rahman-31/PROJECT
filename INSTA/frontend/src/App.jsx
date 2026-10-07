@@ -6,10 +6,12 @@ import Register from './features/auth/pages/Register'
 const App = () => {
   return (
     <div>
+      <Authcontextprovider>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      </Authcontextprovider>
     </div>
   )
 }
