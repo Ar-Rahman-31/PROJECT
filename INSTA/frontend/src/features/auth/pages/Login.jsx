@@ -2,15 +2,30 @@ import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
+import {useAuth} from '../hook/useAuth'
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
+  
+  const {user , loading ,handleLogin}=useAuth()
     const [email, setEmail] =useState('');
     const [password, setPassword] =useState('');
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        
+     const navigate = useNavigate();
+   
 
+  async function handleSubmit(e) {
+        e.preventDefault();
+
+      await handleLogin(email,password)
+      navigate('/')
+     
+    }
+    if(!loading){
+     return <main>
+        <h1>Loadding...................</h1>
+      </main>
     }
   return (
     <div className="authdiv">

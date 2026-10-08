@@ -5,9 +5,9 @@ const api=axios.create({
     withCredentials: true,
 });
 
-export async function registerUser(userData) {
+export async function registerUser(username,bio,email,password) {
     try{
-        const response = await api.post('/register', userData);
+        const response = await api.post('/register', {username,bio,email,password});
         return response.data;   
     } catch (error) {
         console.error('Error registering user:', error);
