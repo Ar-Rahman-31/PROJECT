@@ -9,11 +9,11 @@ const Home = () => {
           <div className="post">
           <div className="profile">
             <div className="img-wrapper">
-            <img src="https://images.pexels.com/photos/39886254/pexels-photo-39886254.png" alt="" />
+            <img className='proImg' src="https://images.pexels.com/photos/39886254/pexels-photo-39886254.png" alt="" />
             </div>
             <p>testuser1</p></div>
           
-            <img src="https://images.pexels.com/photos/39925383/pexels-photo-39925383.jpeg" alt="" />
+            <img className='postImg' src="https://images.pexels.com/photos/39925383/pexels-photo-39925383.jpeg" alt="" />
         
           <div className="caption">
             <p>This is the test caption1</p>
