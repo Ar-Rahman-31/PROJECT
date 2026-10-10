@@ -23,6 +23,5 @@ export async function loginUser(email, password) {
         console.error('Error logging in user:', error);
         throw error;
     }
-    console.log(email);
     
 }

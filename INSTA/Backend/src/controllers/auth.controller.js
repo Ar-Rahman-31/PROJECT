@@ -10,7 +10,7 @@ async function registerUser(req,res){
 
     const isuser=await userModule.findOne({
         $or:[{email},{username}]
-    })
+    }).select("+password")  //kyu ki humne schema me select false kiya tha to password aayega he nhi usse alag se lana pdega
 
     if(isuser)
         return res.status(409).json({
@@ -35,7 +35,7 @@ async function loginUser(req,res){
 
     const user=await userModule.findOne({
         $or:[{email:email},{username:username}]
-    })
+    }).select("+password") 
         if(!user)
         return res.status(409).json({
             message:'user doesnot exist'

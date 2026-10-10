@@ -51,14 +51,11 @@ async function getPosts(req, res) {
 }
 
 
-async function getdetails(req, res,next){
+async function getdetails(req, res){
   
 
     let userid=req.decoded.id //here we are getting the user id from the decoded token, which is passed in the request headers as a Bearer token.
     let postid=req.params.id //here we are getting the post id from the request params, which is passed in the url as /posts/:id
-
-    console.log('userid:',userid)
-    console.log('postid:',postid)
 
     const posts=await postModel.findById(postid )
 
@@ -75,10 +72,18 @@ async function getdetails(req, res,next){
         message:'Post fetched successfully',
         posts:posts
     })  
-} 
+}
+
+async function getfeed(req,res){
+    const posts = await postModel.find().populate('user')
+    res.status(200).json({
+        message : "Post fetch successfully",posts
+    })
+}
 
     module.exports = {
         createPost,
         getPosts,
+        getfeed,
         getdetails
     }
