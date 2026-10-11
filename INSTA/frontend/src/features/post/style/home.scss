@@ -55,6 +55,56 @@
                     width: 100%;
                     border-radius: 20px;
                 }
+
+               .icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+
+    .left {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: #000;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    }
+.like-btn {
+  color: black;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 28px;
+    height: 28px;
+    display: block;
+  }
+
+  &.liked {
+    color: red;
+  }
+}
+}
             }
         }
     }
