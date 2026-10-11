@@ -22,7 +22,7 @@ const Login = () => {
       navigate('/')
      
     }
-    if(!loading){
+    if(loading){
      return <main>
         <h1>Loadding...................</h1>
       </main>

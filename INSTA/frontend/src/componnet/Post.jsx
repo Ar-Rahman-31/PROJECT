@@ -1,13 +1,13 @@
 
 import React, { useState } from 'react'
 
-const Post = () => {
+const Post = ({user,post}) => {
        const [liked, setLiked] = useState(false)
   return (
     <div> <div className="post">
               <div className="profile">
                   <div className="img-wrapper">
-                      <img className='proImg' src={user.profileImage} alt="" />
+                      <img className='proImg' src={user.userImage} alt="" />
                                  </div>
                     <p>{user.username}</p>
                      </div>
